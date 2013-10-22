@@ -18,19 +18,37 @@ module Homestead
           yield type
         end
       end
-      def update(search_type, klass, num_days = 1)
+      def newly_modified(search_type, klass, num_days = 1, q = [])
         with_session(@login_config) do |client|
           client.search(
             :search_type => search_type,
             :class => klass,
-            :query => "(DateChange=#{num_days}.DAYSBACK.)"
+            :query => ["(DateChange=#{num_days}.DAYSBACK.)"].concat(q).join(',')
           ) do |resource|
-            p resource
+            yield resource
           end
         end
       end
-      def update_properties
-        for_each_property_type {|t| update(:Property, t, 2)}
+      def newly_listed(search_type, klass, num_days = 1, q = [])
+        with_session(@login_config) do |client|
+          client.search(
+            :search_type => search_type,
+            :class => klass,
+            :query => ["(ListDate=#{num_days}.DAYSBACK.)"].concat(q).join(',')
+          ) do |resource|
+            yield resource
+          end
+        end
+      end
+      def update_properties(num_days = 1, q = [])
+        for_each_property_type do |t|
+          newly_modified(:Property, t, num_days, q) do |resource|
+            yield resource
+          end
+          newly_listed(:Property, t, num_days, q) do |resource|
+            yield resource
+          end
+        end
       end
     end
   end

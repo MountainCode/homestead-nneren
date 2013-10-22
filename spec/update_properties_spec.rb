@@ -8,7 +8,11 @@ describe Homestead::Nneren::RetsImporter do
     config.keys.inject({}) { |a, k| a.merge({k.to_sym => config[k]}) }
   end
   it 'should update' do
-    p login_config
-    subject.update_properties
+    count = 0
+    subject.update_properties(1, ['(StateOrProvince=VT)']) do |resource|
+      p resource['ListDate']
+      count += 1
+    end
+    puts count
   end
 end
