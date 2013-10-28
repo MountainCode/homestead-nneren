@@ -20,6 +20,16 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Developing
+
+```bash
+$ git clone git@github.com:MountainCode/homestead-nneren.git
+$ bundle install
+$ rake homestead:install:migrations
+$ rake db:migrate RAILS_ENV=test
+$ rake spec
+```
+
 ## Contributing
 
 1. Fork it
