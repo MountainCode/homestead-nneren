@@ -25,9 +25,9 @@ TODO: Write usage instructions here
 ```bash
 $ git clone git@github.com:MountainCode/homestead-nneren.git
 $ bundle install
-$ rake homestead:install:migrations
-$ rake db:migrate RAILS_ENV=test
-$ rake spec
+$ bundle exec rake homestead:install:migrations
+$ bundle exec rake db:migrate RAILS_ENV=test
+$ bundle exec rake spec
 ```
 
 ## Contributing
